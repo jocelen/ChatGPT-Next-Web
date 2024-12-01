@@ -30,6 +30,8 @@ export const IFLYTEK_BASE_URL = "https://spark-api-open.xf-yun.com";
 
 export const XAI_BASE_URL = "https://api.x.ai";
 
+export const CHATGLM_BASE_URL = "https://open.bigmodel.cn";
+
 export const CACHE_URL_PREFIX = "/api/cache";
 export const UPLOAD_URL = `${CACHE_URL_PREFIX}/upload`;
 
@@ -62,6 +64,7 @@ export enum ApiPath {
   Stability = "/api/stability",
   Artifacts = "/api/artifacts",
   XAI = "/api/xai",
+  ChatGLM = "/api/chatglm",
 }
 
 export enum SlotID {
@@ -115,6 +118,7 @@ export enum ServiceProvider {
   Stability = "Stability",
   Iflytek = "Iflytek",
   XAI = "XAI",
+  ChatGLM = "ChatGLM",
 }
 
 // Google API safety settings, see https://ai.google.dev/gemini-api/docs/safety-settings
@@ -138,6 +142,7 @@ export enum ModelProvider {
   Moonshot = "Moonshot",
   Iflytek = "Iflytek",
   XAI = "XAI",
+  ChatGLM = "ChatGLM",
 }
 
 export const Stability = {
@@ -225,6 +230,11 @@ export const XAI = {
   ChatPath: "v1/chat/completions",
 };
 
+export const ChatGLM = {
+  ExampleEndpoint: CHATGLM_BASE_URL,
+  ChatPath: "api/paas/v4/chat/completions",
+};
+
 export const DEFAULT_INPUT_TEMPLATE = `{{input}}`; // input / time / model / lang
 // export const DEFAULT_SYSTEM_TEMPLATE = `
 // You are ChatGPT, a large language model trained by {{ServiceProvider}}.
@@ -254,6 +264,7 @@ export const KnowledgeCutOffDate: Record<string, string> = {
   "gpt-4o": "2023-10",
   "gpt-4o-2024-05-13": "2023-10",
   "gpt-4o-2024-08-06": "2023-10",
+  "gpt-4o-2024-11-20": "2023-10",
   "chatgpt-4o-latest": "2023-10",
   "gpt-4o-mini": "2023-10",
   "gpt-4o-mini-2024-07-18": "2023-10",
@@ -293,6 +304,7 @@ const openaiModels = [
   "gpt-4o",
   "gpt-4o-2024-05-13",
   "gpt-4o-2024-08-06",
+  "gpt-4o-2024-11-20",
   "chatgpt-4o-latest",
   "gpt-4o-mini",
   "gpt-4o-mini-2024-07-18",
@@ -308,6 +320,9 @@ const googleModels = [
   "gemini-1.0-pro",
   "gemini-1.5-pro-latest",
   "gemini-1.5-flash-latest",
+  "gemini-exp-1114",
+  "gemini-exp-1121",
+  "learnlm-1.5-pro-experimental",
   "gemini-pro-vision",
 ];
 
@@ -317,11 +332,13 @@ const anthropicModels = [
   "claude-2.1",
   "claude-3-sonnet-20240229",
   "claude-3-opus-20240229",
+  "claude-3-opus-latest",
   "claude-3-haiku-20240307",
+  "claude-3-5-haiku-20241022",
+  "claude-3-5-haiku-latest",
   "claude-3-5-sonnet-20240620",
   "claude-3-5-sonnet-20241022",
   "claude-3-5-sonnet-latest",
-  "claude-3-opus-latest",
 ];
 
 const baiduModels = [
@@ -378,6 +395,17 @@ const iflytekModels = [
 ];
 
 const xAIModes = ["grok-beta"];
+
+const chatglmModels = [
+  "glm-4-plus",
+  "glm-4-0520",
+  "glm-4",
+  "glm-4-air",
+  "glm-4-airx",
+  "glm-4-long",
+  "glm-4-flashx",
+  "glm-4-flash",
+];
 
 let seq = 1000; // 内置的模型序号生成器从1000开始
 export const DEFAULT_MODELS = [
@@ -500,6 +528,17 @@ export const DEFAULT_MODELS = [
       providerName: "XAI",
       providerType: "xai",
       sorted: 11,
+    },
+  })),
+  ...chatglmModels.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "chatglm",
+      providerName: "ChatGLM",
+      providerType: "chatglm",
+      sorted: 12,
     },
   })),
 ] as const;
